@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiteLagoon.web", "WhiteLagoon.web\WhiteLagoon.web.csproj", "{96156BC7-6623-4C33-AC3C-28BD44BEB57E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteLagoon.web", "WhiteLagoon.web\WhiteLagoon.web.csproj", "{96156BC7-6623-4C33-AC3C-28BD44BEB57E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiteLagoon.Domain", "WhiteLagoon.Domain\WhiteLagoon.Domain.csproj", "{027E9487-FC57-45AF-9711-28F54CC71686}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteLagoon.Domain", "WhiteLagoon.Domain\WhiteLagoon.Domain.csproj", "{027E9487-FC57-45AF-9711-28F54CC71686}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiteLagoon.Application", "WhiteLagoon.Application\WhiteLagoon.Application.csproj", "{C4FFD00A-85BF-4E52-9746-3B48E0015502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteLagoon.Application", "WhiteLagoon.Application\WhiteLagoon.Application.csproj", "{C4FFD00A-85BF-4E52-9746-3B48E0015502}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiteLagoon.Infrastructure", "WhiteLagoon.Infrastructure\WhiteLagoon.Infrastructure.csproj", "{888090E1-4E7B-4EC0-A77D-6C211BB3D0AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhiteLagoon.Infrastructure", "WhiteLagoon.Infrastructure\WhiteLagoon.Infrastructure.csproj", "{888090E1-4E7B-4EC0-A77D-6C211BB3D0AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScreenShot", "ScreenShot", "{468EC3EB-4AA1-45E0-AF7A-B7D8FBC9764E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

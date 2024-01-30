@@ -35,8 +35,39 @@ namespace WhiteLagoon.web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View();
+        }
+
+       
+        public IActionResult Update(int villaId)
+        {
+            Villa? obj = _db.Villas.FirstOrDefault(u=>u.Id == villaId);
+                
+            if (obj == null)
+            {
+                return RedirectToAction("Error","Home");
+            }
+            return View(obj);
 
         }
+        [HttpPost]
+        public IActionResult Update(Villa obj)
+        {
+          
+            if (ModelState.IsValid && obj.Id > 0)
+            {
+
+                _db.Update(obj);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
+
+
+
+
+
+
     }
 
 
@@ -46,5 +77,5 @@ namespace WhiteLagoon.web.Controllers
 
 
 
-    
+
 }

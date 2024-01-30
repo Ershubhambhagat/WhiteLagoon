@@ -14,7 +14,6 @@ namespace WhiteLagoon.web.Controllers
         #endregion
 
         #region View Villa
-
         public IActionResult Index()
         {
             var villa = _db.Villas.ToList();
@@ -46,6 +45,7 @@ namespace WhiteLagoon.web.Controllers
             Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villaId);
             if (obj == null)
             {
+                TempData["error"] = "Failed to Update the villa.";
                 return RedirectToAction("Error", "Home");
             }
             return View(obj);
@@ -57,6 +57,7 @@ namespace WhiteLagoon.web.Controllers
             {
                 _db.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "The villa has been Update successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View();
@@ -64,13 +65,12 @@ namespace WhiteLagoon.web.Controllers
         #endregion
 
         #region Delete Villa
-
-
         public IActionResult Delete(int villaId)
         {
             Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villaId);
             if (obj == null)
             {
+                TempData["error"] = "Failed to delete the villa.";
                 return RedirectToAction("Error", "Home");
             }
             return View(obj);
@@ -78,9 +78,9 @@ namespace WhiteLagoon.web.Controllers
         [HttpPost]
         public IActionResult Delete(Villa obj)
         {
-            
             if (obj == null)
             {
+                TempData["error"] = "Failed to delete the villa.";
                 return RedirectToAction("Error", "Home");
             }
             _db.Villas.Remove(obj);

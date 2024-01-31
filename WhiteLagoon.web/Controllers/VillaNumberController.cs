@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
 namespace WhiteLagoon.web.Controllers
@@ -24,6 +25,13 @@ namespace WhiteLagoon.web.Controllers
         #region Create Villa Number
         public IActionResult CreateVillaNumber()
         {
+            //for Drop Down List  
+            IEnumerable<SelectListItem> list = _db.Villas.ToList().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }) ;
+            ViewData["VillaList"] = list;
             return View();
         }
         [HttpPost]

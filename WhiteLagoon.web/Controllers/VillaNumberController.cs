@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
+using WhiteLagoon.web.Models.ViewModels;
 namespace WhiteLagoon.web.Controllers
 {
     public class VillaNumberController : Controller
@@ -26,13 +28,16 @@ namespace WhiteLagoon.web.Controllers
         public IActionResult CreateVillaNumber()
         {
             //for Drop Down List  
-            IEnumerable<SelectListItem> list = _db.Villas.ToList().Select(u => new SelectListItem
+            //Transfer temp data Controllert to View
+            VillaNumberVM VillaNumberVM = new()
             {
-                Text = u.Name,
-                Value = u.Id.ToString()
-            }) ;
-            ViewData["VillaList"] = list;
-            return View();
+                 VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                })
+            };
+            return View(VillaNumberVM);
         }
         [HttpPost]
         public IActionResult CreateVillaNumber(VillaNumber obj)

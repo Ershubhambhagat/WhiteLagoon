@@ -107,25 +107,34 @@ namespace WhiteLagoon.web.Controllers
         #endregion
 
         #region Delete Villa Number
-        public IActionResult Delete(int villaId)
+        public IActionResult DeleteVillaNumber(int villaNumberId)
         {
-            Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villaId);
-            if (obj == null)
+            VillaNumberVM villaNumberVM = new()
             {
-                TempData["error"] = "Failed to delete the villa.";
-                return RedirectToAction("Error", "Home");
+                VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                VillaNumber = _db.VillaNumber.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+            };
+            if (villaNumberVM.VillaNumber == null)
+            {
+                return RedirectToAction("error", "Home");
             }
-            return View(obj);
+            return View(villaNumberVM);
         }
         [HttpPost]
-        public IActionResult Delete(Villa obj)
+        public IActionResult DeleteVillaNumber(VillaNumberVM villaNumberVM)
         {
-            if (obj == null)
+            var villaNumber = _db.VillaNumber.
+                FirstOrDefault(x => x.Villa_Number == villaNumberVM.VillaNumber.Villa_Number);
+            if (villaNumberVM == null)
             {
                 TempData["error"] = "Failed to delete the villa.";
                 return RedirectToAction("Error", "Home");
             }
-            _db.Villas.Remove(obj);
+            _db.VillaNumber.Remove(villaNumber);
             _db.SaveChanges();
             TempData["success"] = "The villa has been Deleted successfully.";
             return RedirectToAction("Index");

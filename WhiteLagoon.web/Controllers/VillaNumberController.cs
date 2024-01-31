@@ -28,16 +28,13 @@ namespace WhiteLagoon.web.Controllers
         public IActionResult CreateVillaNumber()
         {
             //for Drop Down List  
-            //Transfer temp data Controllert to View
-            VillaNumberVM VillaNumberVM = new()
+            IEnumerable<SelectListItem> list = _db.Villas.ToList().Select(u => new SelectListItem
             {
-                 VillaList = _db.Villas.ToList().Select(u => new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString()
-                })
-            };
-            return View(VillaNumberVM);
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }) ;
+            ViewData["VillaList"] = list;
+            return View();
         }
         [HttpPost]
         public IActionResult CreateVillaNumber(VillaNumber obj)

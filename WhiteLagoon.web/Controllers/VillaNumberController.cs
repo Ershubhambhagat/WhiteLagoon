@@ -137,7 +137,7 @@ namespace WhiteLagoon.web.Controllers
             _db.VillaNumber.Remove(villaNumber);
             _db.SaveChanges();
             TempData["success"] = "The villa has been Deleted successfully.";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
@@ -19,7 +20,7 @@ namespace WhiteLagoon.web.Controllers
         #region View Villa Number
         public IActionResult Index()
         {
-            var VillaNumber = _db.VillaNumber.ToList();
+            var VillaNumber = _db.VillaNumber.Include(u=>u.villa).ToList();
             return View(VillaNumber);
         }
         #endregion

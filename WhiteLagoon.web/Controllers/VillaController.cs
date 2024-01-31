@@ -85,6 +85,7 @@ namespace WhiteLagoon.web.Controllers
             }
             _db.Villas.Remove(obj);
             _db.SaveChanges();
+            TempData["success"] = "The villa has been Deleted successfully.";
             return RedirectToAction("Index");
         }
         #endregion

@@ -20,7 +20,7 @@ namespace WhiteLagoon.web.Controllers
         #region View Villa Number
         public IActionResult Index()
         {
-            var VillaNumber = _db.VillaNumber.Include(u=>u.villa).ToList();
+            var VillaNumber = _db.VillaNumber.Include(u => u.villa).ToList();
             return View(VillaNumber);
         }
         #endregion
@@ -44,7 +44,7 @@ namespace WhiteLagoon.web.Controllers
         [HttpPost]
         public IActionResult CreateVillaNumber(VillaNumberVM obj)
         {
-            bool roomNumberExist=_db.VillaNumber.Any(u=>u.Villa_Number==obj.VillaNumber.Villa_Number); ;
+            bool roomNumberExist = _db.VillaNumber.Any(u => u.Villa_Number == obj.VillaNumber.Villa_Number); ;
             if (ModelState.IsValid && !roomNumberExist)
             {
                 _db.VillaNumber.Add(obj.VillaNumber);
@@ -67,27 +67,42 @@ namespace WhiteLagoon.web.Controllers
         #endregion
 
         #region Update Villa Number
-        public IActionResult Update(int villaId)
+        public IActionResult Update(int villaNumberId)
         {
-            Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villaId);
-            if (obj == null)
+            VillaNumberVM villaNumberVM = new()
             {
-                TempData["error"] = "Failed to Update the villa.";
-                return RedirectToAction("Error", "Home");
+                VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                VillaNumber = _db.VillaNumber.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+            };
+            if (villaNumberVM.VillaNumber == null)
+            {
+                return RedirectToAction("error","Home"); 
             }
-            return View(obj);
+            return View(villaNumberVM);
         }
         [HttpPost]
-        public IActionResult Update(VillaNumber obj)
+        public IActionResult Update(VillaNumberVM obj)
         {
-            if (ModelState.IsValid && obj.VillaId > 0)
+
+            if (ModelState.IsValid )
             {
-                _db.Update(obj);
+                _db.VillaNumber.Update(obj.VillaNumber);
                 _db.SaveChanges();
-                TempData["success"] = "The villa has been Update successfully.";
+                TempData["success"] = "The villa Number  has been Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            return View();
+          
+            obj.VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+            return View(obj);
+
         }
         #endregion
 

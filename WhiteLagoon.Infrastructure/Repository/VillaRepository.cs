@@ -6,7 +6,7 @@ using WhiteLagoon.Infrastructure.Data;
 
 namespace WhiteLagoon.Infrastructure.Repository
 {
-    public class VillaRepository :Repository<Villa>, IVillaNumberRepository
+    public class VillaRepository :Repository<Villa>, IVillaRepository
     {
         #region CTOR
         private readonly ApplicationDbContext _db;

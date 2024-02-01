@@ -8,7 +8,7 @@ using WhiteLagoon.Domain.Entities;
 
 namespace WhiteLagoon.Application.Common.Interface
 {
-    public interface IVillaRepository: IRepository<Villa>
+    public interface IVillaRepository : IRepository<Villa>
     {
         void Remove(Villa entity);
         void Update(Villa entity);

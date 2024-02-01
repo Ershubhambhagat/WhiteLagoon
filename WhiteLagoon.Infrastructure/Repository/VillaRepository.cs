@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,39 +7,90 @@ using System.Text;
 using System.Threading.Tasks;
 using WhiteLagoon.Application.Common.Interface;
 using WhiteLagoon.Domain.Entities;
+using WhiteLagoon.Infrastructure.Data;
 
 namespace WhiteLagoon.Infrastructure.Repository
 {
     public class VillaRepository : IVillaRepository
     {
+        #region CTOR
+        private readonly ApplicationDbContext _db;
+        public VillaRepository(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+        #endregion
+
+        #region Create 
         public void Add(Villa entity)
         {
-            throw new NotImplementedException();
+            _db.Add(entity);
         }
+        #endregion
 
-        public IEnumerable<Villa> Get(Expression<Func<Villa, bool>> filter, string? includeProperties = null)
+        #region Get 1 
+        public Villa Get(Expression<Func<Villa, bool>> filter, string? includeProperties = null)
         {
-            throw new NotImplementedException();
+            IQueryable<Villa> quary = _db.Set<Villa>();
+            if (filter != null)
+            {
+                quary = quary.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                //villa , villanumber --case sensitive
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    quary = quary.Include(property);
+                }
+            }
+            return quary.FirstOrDefault();
         }
+        #endregion
+
+        #region Get ALL 
 
         public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, string? includeProperties = null)
         {
-            throw new NotImplementedException();
+            IQueryable<Villa> quary = _db.Set<Villa>();
+            if(filter != null)
+            {
+                quary= quary.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                //villa , villanumber --case sensitive
+                foreach(var property in includeProperties.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries))
+                {
+                    quary = quary.Include(property);
+                }
+            }
+            return quary.ToList();
         }
+        #endregion
 
+        #region Remove 
         public void Remove(Villa entity)
         {
-            throw new NotImplementedException();
+            _db.Remove(entity);
+            Save();
         }
 
+        #endregion
+
+        #region Save 
         public void Save()
         {
-            throw new NotImplementedException();
+            _db.SaveChanges();
         }
+        #endregion
 
+        #region Update  
         public void Update(Villa entity)
         {
-            throw new NotImplementedException();
+            _db.Villas.Update(entity);
+            Save();
         }
+        #endregion
     }
 }

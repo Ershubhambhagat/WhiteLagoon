@@ -22,6 +22,7 @@ namespace WhiteLagoon.Infrastructure.Repository
         public void Create(T entity)
         {
             _db.Add(entity);
+            save();
         }
         #endregion
 
@@ -42,7 +43,7 @@ namespace WhiteLagoon.Infrastructure.Repository
                     quary = quary.Include(property);
                 }
             }
-            return quary.ToList();
+                return quary.ToList();
         }
         #endregion
 
@@ -63,9 +64,24 @@ namespace WhiteLagoon.Infrastructure.Repository
                 }
             }
             return quary.FirstOrDefault();
+
         }
         #endregion
-     
 
+        #region Any
+        public bool Any(Expression<Func<T, bool>>? filter)
+        {
+            return dbSet.Any(filter);
+        }
+
+
+        #endregion
+
+        #region save 
+        public void save()
+        {
+            _db.SaveChanges();
+        }
+        #endregion
     }
 }

@@ -10,8 +10,9 @@ namespace WhiteLagoon.Application.Common.Interface
 {
     public interface IVillaNumberRepository : IRepository<VillaNumber>
     {
-        void Remove(VillaNumber entity);
         void Update(VillaNumber entity);
+        void Remove(VillaNumber entity);
+
         void Save();
 
     }

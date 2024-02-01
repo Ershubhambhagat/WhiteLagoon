@@ -6,7 +6,7 @@ namespace WhiteLagoon.web.Controllers
 {
     public class VillaController : Controller
     {
-        #region Ctor VillaRepository
+        #region Ctor UnitOfWork
         private readonly IUnitOfWork _unitOfWork;
 
         public VillaController(IUnitOfWork unitOfWork)

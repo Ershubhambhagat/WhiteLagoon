@@ -64,6 +64,14 @@ namespace WhiteLagoon.Infrastructure.Repository
         }
         #endregion
 
+        #region Update  
+        public void Update(Villa entity)
+        {
+            _db.Villas.Update(entity);
+            Save();
+        }
+        #endregion
+
         #region Remove 
         public void Remove(Villa entity)
         {
@@ -77,14 +85,6 @@ namespace WhiteLagoon.Infrastructure.Repository
         public void Save()
         {
             _db.SaveChanges();
-        }
-        #endregion
-
-        #region Update  
-        public void Update(Villa entity)
-        {
-            _db.Villas.Update(entity);
-            Save();
         }
         #endregion
     }

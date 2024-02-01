@@ -6,61 +6,13 @@ using WhiteLagoon.Infrastructure.Data;
 
 namespace WhiteLagoon.Infrastructure.Repository
 {
-    public class VillaRepository : IVillaRepository
+    public class VillaRepository :Repository<Villa>, IVillaRepository
     {
         #region CTOR
         private readonly ApplicationDbContext _db;
-        public VillaRepository(ApplicationDbContext db)
+        public VillaRepository(ApplicationDbContext db):base(db)
         {
             _db = db;
-        }
-        #endregion
-
-        #region Create 
-        public void Create(Villa entity)
-        {
-            _db.Add(entity);
-        }
-        #endregion
-
-        #region Get ALL 
-
-        public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, string? includeProperties = null)
-        {
-            IQueryable<Villa> quary = _db.Set<Villa>();
-            if (filter != null)
-            {
-                quary = quary.Where(filter);
-            }
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                //villa , villanumber --case sensitive
-                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    quary = quary.Include(property);
-                }
-            }
-            return quary.ToList();
-        }
-        #endregion
-
-        #region Get 1 
-        public Villa Get(Expression<Func<Villa, bool>> filter, string? includeProperties = null)
-        {
-            IQueryable<Villa> quary = _db.Set<Villa>();
-            if (filter != null)
-            {
-                quary = quary.Where(filter);
-            }
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                //villa , villanumber --case sensitive
-                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    quary = quary.Include(property);
-                }
-            }
-            return quary.FirstOrDefault();
         }
         #endregion
 

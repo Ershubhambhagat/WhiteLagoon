@@ -8,13 +8,10 @@ using WhiteLagoon.Domain.Entities;
 
 namespace WhiteLagoon.Application.Common.Interface
 {
-    public interface IVillaRepository
+    public interface IVillaRepository: IRepository<Villa>
     {
-        IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, string? includeProperties = null);
-        Villa Get(Expression<Func<Villa, bool>> filter, string? includeProperties = null);
-        void Create(Villa entity);
-        void Update(Villa entity);
         void Remove(Villa entity);
+        void Update(Villa entity);
         void Save();
 
     }

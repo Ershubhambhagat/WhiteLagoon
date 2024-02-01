@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using WhiteLagoon.Application.Common.Interface;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
@@ -22,9 +17,30 @@ namespace WhiteLagoon.Infrastructure.Repository
         #endregion
 
         #region Create 
-        public void Add(Villa entity)
+        public void Create(Villa entity)
         {
             _db.Add(entity);
+        }
+        #endregion
+
+        #region Get ALL 
+
+        public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, string? includeProperties = null)
+        {
+            IQueryable<Villa> quary = _db.Set<Villa>();
+            if (filter != null)
+            {
+                quary = quary.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                //villa , villanumber --case sensitive
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    quary = quary.Include(property);
+                }
+            }
+            return quary.ToList();
         }
         #endregion
 
@@ -45,27 +61,6 @@ namespace WhiteLagoon.Infrastructure.Repository
                 }
             }
             return quary.FirstOrDefault();
-        }
-        #endregion
-
-        #region Get ALL 
-
-        public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, string? includeProperties = null)
-        {
-            IQueryable<Villa> quary = _db.Set<Villa>();
-            if(filter != null)
-            {
-                quary= quary.Where(filter);
-            }
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                //villa , villanumber --case sensitive
-                foreach(var property in includeProperties.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries))
-                {
-                    quary = quary.Include(property);
-                }
-            }
-            return quary.ToList();
         }
         #endregion
 

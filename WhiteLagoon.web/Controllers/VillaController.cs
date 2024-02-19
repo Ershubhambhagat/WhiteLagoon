@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WhiteLagoon.Application.Common.Interface;
 using WhiteLagoon.Domain.Entities;
-using WhiteLagoon.Infrastructure.Data;
 namespace WhiteLagoon.web.Controllers
 {
     public class VillaController : Controller
@@ -35,7 +35,7 @@ namespace WhiteLagoon.web.Controllers
             {
                 if (obj.Image is not null)//for Image uplode 
                 {
-                    string fileName = "VillaImage_"+obj.Name+"_"+Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string fileName = "VillaImage_" + obj.Name + "_" + Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
                     string ImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, @"images\VillaImage");
                     using var fileStream = new FileStream(Path.Combine(ImagePath, fileName), FileMode.Create);
                     obj.Image.CopyTo(fileStream);
@@ -68,7 +68,27 @@ namespace WhiteLagoon.web.Controllers
         public IActionResult Update(Villa obj)
         {
             if (ModelState.IsValid && obj.Id > 0)
+
             {
+
+                if (obj.Image is not null)//for Image Update 
+                {
+                    string fileName = "VillaImage_" + obj.Name + "_" + Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string ImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, @"images\VillaImage");
+                    if (!string.IsNullOrEmpty(obj.ImageUrl))
+                    {
+                        var oldImagePath= Path.Combine(_WebHostEnvironment.WebRootPath, obj.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+
+                    }
+                    using var fileStream = new FileStream(Path.Combine(ImagePath, fileName), FileMode.Create);
+                    obj.Image.CopyTo(fileStream);
+                    obj.ImageUrl = @"\images\VillaImage\" + fileName;
+                }
+               
                 _unitOfWork.Villa.Update(obj);
                 TempData["success"] = "The villa has been Update successfully.";
                 return RedirectToAction(nameof(Index));

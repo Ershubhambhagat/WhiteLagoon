@@ -8,9 +8,10 @@ namespace WhiteLagoon.web.Controllers
     {
         #region Ctor UnitOfWork
         private readonly IUnitOfWork _unitOfWork;
-
-        public VillaController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _WebHostEnvironment;//for Image Uplode 
+        public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
+            _WebHostEnvironment = webHostEnvironment;
             _unitOfWork = unitOfWork;
         }
         #endregion
@@ -32,8 +33,19 @@ namespace WhiteLagoon.web.Controllers
             }
             if (ModelState.IsValid)
             {
-               _unitOfWork.Villa.Create(obj);
-               _unitOfWork.Villa.Save();
+                if (obj.Image is not null)//for Image uplode 
+                {
+                    string fileName = "VillaImage_"+obj.Name+"_"+Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string ImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, @"images\VillaImage");
+                    using var fileStream = new FileStream(Path.Combine(ImagePath, fileName), FileMode.Create);
+                    obj.Image.CopyTo(fileStream);
+                    obj.ImageUrl = @"\images\VillaImage\" + fileName;
+                }
+                else
+                {
+                    obj.ImageUrl = "https://placehold.co/600x400/black/red";
+                }
+                _unitOfWork.Villa.Create(obj);
                 TempData["success"] = "The villa has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
@@ -44,7 +56,7 @@ namespace WhiteLagoon.web.Controllers
         #region Update Villa
         public IActionResult Update(int villaId)
         {
-            Villa? obj =_unitOfWork.Villa.Get(u => u.Id == villaId);
+            Villa? obj = _unitOfWork.Villa.Get(u => u.Id == villaId);
             if (obj == null)
             {
                 TempData["error"] = "Failed to Update the villa.";
@@ -57,7 +69,7 @@ namespace WhiteLagoon.web.Controllers
         {
             if (ModelState.IsValid && obj.Id > 0)
             {
-               _unitOfWork.Villa.Update(obj);
+                _unitOfWork.Villa.Update(obj);
                 TempData["success"] = "The villa has been Update successfully.";
                 return RedirectToAction(nameof(Index));
             }
@@ -68,7 +80,7 @@ namespace WhiteLagoon.web.Controllers
         #region Delete Villa
         public IActionResult Delete(int villaId)
         {
-            Villa? obj =_unitOfWork.Villa.Get(u => u.Id == villaId);
+            Villa? obj = _unitOfWork.Villa.Get(u => u.Id == villaId);
             if (obj == null)
             {
                 TempData["error"] = "Failed to delete the villa.";
@@ -84,7 +96,7 @@ namespace WhiteLagoon.web.Controllers
                 TempData["error"] = "Failed to delete the villa.";
                 return RedirectToAction("Error", "Home");
             }
-           _unitOfWork.Villa.Remove(obj);
+            _unitOfWork.Villa.Remove(obj);
             TempData["success"] = "The villa has been Deleted successfully.";
             return RedirectToAction("Index");
         }

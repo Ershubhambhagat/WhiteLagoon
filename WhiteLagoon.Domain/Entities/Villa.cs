@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,8 @@ namespace WhiteLagoon.Domain.Entities
         public double Price { get; set; }
         public int Sqft { get; set; }
         public int Occupancy { get; set; }
+        [NotMapped]//Column not added to the database 
+        public IFormFile? Image { get; set; }
         public string? ImageUrl{ get; set; }
         public DateTime CreatedDate  { get; set; }
         public DateTime UpdatedDate { get; set; }

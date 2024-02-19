@@ -68,9 +68,7 @@ namespace WhiteLagoon.web.Controllers
         public IActionResult Update(Villa obj)
         {
             if (ModelState.IsValid && obj.Id > 0)
-
             {
-
                 if (obj.Image is not null)//for Image Update 
                 {
                     string fileName = "VillaImage_" + obj.Name + "_" + Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
@@ -111,14 +109,24 @@ namespace WhiteLagoon.web.Controllers
         [HttpPost]
         public IActionResult Delete(Villa obj)
         {
-            if (obj == null)
+            Villa? objFormDB = _unitOfWork.Villa.Get(u => u.Id == obj.Id);
+            if (objFormDB != null)
             {
-                TempData["error"] = "Failed to delete the villa.";
-                return RedirectToAction("Error", "Home");
+
+                if (!string.IsNullOrEmpty(objFormDB.ImageUrl))
+                {
+                    var oldImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, objFormDB.ImageUrl.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+
+                }
+                _unitOfWork.Villa.Remove(objFormDB);
+                TempData["success"] = "The villa has been Deleted successfully.";
+                return RedirectToAction("Index");
             }
-            _unitOfWork.Villa.Remove(obj);
-            TempData["success"] = "The villa has been Deleted successfully.";
-            return RedirectToAction("Index");
+            return View();
         }
         #endregion
     }

@@ -19,19 +19,28 @@ namespace WhiteLagoon.Infrastructure.Repository
         }
         #endregion
 
+        #region remove
         public void Remove(Amenity entity)
         {
             _db.Amenities.Remove(entity);
             save();
         }
+        #endregion
+
+        #region Update
         public void Update(Amenity entity)
         {
            _db.Amenities.Update(entity);
             save();
         }
+        #endregion
+
+        #region Save
         public void Save()
         {
             _db.SaveChanges();
         }
+        #endregion
+
     }
 }

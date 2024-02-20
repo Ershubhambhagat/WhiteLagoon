@@ -1,20 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WhiteLagoon.Domain.Entities;
 
 namespace WhiteLagoon.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
+        #region DBSET
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumber { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
-
-
+        public DbSet<ApplicationUser> ApplicatrionUsers { get; set; }
+        #endregion
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            #region SeedData
             modelBuilder.Entity<Villa>().HasData(
                 new Villa
                 {
@@ -140,7 +143,7 @@ namespace WhiteLagoon.Infrastructure.Data
               VillaId = 3,
               Name = "Private Balcony"
           });
-
+            #endregion
         }
     }
 }

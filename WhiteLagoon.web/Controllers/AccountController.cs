@@ -66,10 +66,8 @@ namespace WhiteLagoon.Web.Controllers
                 }),
                 RedirectUrl = returnUrl
             };
-
             return View(registerVM);
         }
-
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {

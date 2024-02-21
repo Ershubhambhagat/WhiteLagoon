@@ -20,10 +20,8 @@ namespace WhiteLagoon.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             #region SeedData
             modelBuilder.Entity<Villa>().HasData(
-            
                 new Villa
                 {
                     Id = 1,

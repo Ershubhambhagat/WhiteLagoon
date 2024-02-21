@@ -10,13 +10,11 @@ namespace WhiteLagoon.web.Controllers
     {
         #region Ctor UnitOfWork
         private readonly IUnitOfWork _unitOfWork;
-
         public VillaNumberController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         #endregion
-
         #region View Villa Number
         public IActionResult Index()
         {
@@ -25,13 +23,11 @@ namespace WhiteLagoon.web.Controllers
             return View(VillaNumber);
         }
         #endregion
-
         #region Create Villa Number
         public IActionResult CreateVillaNumber()
         {
             //for Drop Down List  
             //Transfer temp data Controllert to View
-
             VillaNumberVM villaNumberVM = new()
             {
                 VillaList = _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
@@ -55,7 +51,6 @@ namespace WhiteLagoon.web.Controllers
             if (roomNumberExist)
             {
                 TempData["error"] = "The villa Number  has been already exists.";
-
             }
             obj.VillaList = _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
             {
@@ -65,7 +60,6 @@ namespace WhiteLagoon.web.Controllers
             return View(obj);
         }
         #endregion
-
         #region Update Villa Number
         public IActionResult Update(int villaNumberId)
         {
@@ -87,24 +81,20 @@ namespace WhiteLagoon.web.Controllers
         [HttpPost]
         public IActionResult Update(VillaNumberVM obj)
         {
-
             if (ModelState.IsValid )
             {
                 _unitOfWork.VillaNumber.Update(obj.VillaNumber);
                 TempData["success"] = "The villa Number  has been Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
-          
             obj.VillaList = _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             });
             return View(obj);
-
         }
         #endregion
-
         #region Delete Villa Number
         public IActionResult DeleteVillaNumber(int villaNumberId)
         {

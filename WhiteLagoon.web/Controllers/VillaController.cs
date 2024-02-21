@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WhiteLagoon.Application.Common.Interface;
 using WhiteLagoon.Domain.Entities;
 namespace WhiteLagoon.web.Controllers
 {
+    [Authorize]
     public class VillaController : Controller
     {
         #region Ctor UnitOfWork

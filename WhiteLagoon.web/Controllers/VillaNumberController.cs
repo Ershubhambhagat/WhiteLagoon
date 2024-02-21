@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteLagoon.Application.Common.Interface;
 using WhiteLagoon.web.Models.ViewModels;
 namespace WhiteLagoon.web.Controllers
 {
+    [Authorize]
     public class VillaNumberController : Controller
     {
         #region Ctor UnitOfWork

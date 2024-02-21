@@ -6,6 +6,7 @@ namespace WhiteLagoon.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+<<<<<<< HEAD
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
@@ -17,6 +18,20 @@ namespace WhiteLagoon.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+=======
+        #region DBSET
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
+        public DbSet<Villa> Villas { get; set; }
+        public DbSet<VillaNumber> VillaNumber { get; set; }
+        public DbSet<Amenity> Amenities { get; set; }
+        public DbSet<ApplicationUser> ApplicatrionUsers { get; set; }
+        #endregion
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            #region SeedData
+>>>>>>> 5e043480213227ff2df602398908183439f8c929
             modelBuilder.Entity<Villa>().HasData(
             #region seed
                 new Villa

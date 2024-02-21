@@ -9,7 +9,6 @@ namespace WhiteLagoon.Web.Controllers
 {
     public class AccountController : Controller
     {
-
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -26,7 +25,6 @@ namespace WhiteLagoon.Web.Controllers
 
         public IActionResult Login(string returnUrl = null)
         {
-
             returnUrl ??= Url.Content("~/");
 
             LoginVM loginVM = new()
@@ -68,6 +66,7 @@ namespace WhiteLagoon.Web.Controllers
             };
             return View(registerVM);
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
@@ -129,7 +128,6 @@ namespace WhiteLagoon.Web.Controllers
             {
                 var result = await _signInManager
                     .PasswordSignInAsync(loginVM.Email, loginVM.Password, loginVM.RememberMe, lockoutOnFailure: false);
-
 
                 if (result.Succeeded)
                 {

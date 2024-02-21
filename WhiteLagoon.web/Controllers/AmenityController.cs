@@ -4,32 +4,38 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteLagoon.Application.Common.Interface;
 using WhiteLagoon.Application.Common.Utility;
 using WhiteLagoon.web.Models.ViewModels;
+
 namespace WhiteLagoon.web.Controllers
 {
     [Authorize(Roles = SD.Role_Admin)]
     public class AmenityController : Controller
     {
         #region Ctor UnitOfWork
+
         private readonly IUnitOfWork _unitOfWork;
 
         public AmenityController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        #endregion
+
+        #endregion Ctor UnitOfWork
 
         #region View Amenity Number
+
         public IActionResult Index()
         {
             var amenities = _unitOfWork.Amenity.GetAll(includeProperties: "villa");
             return View(amenities);
         }
-        #endregion
+
+        #endregion View Amenity Number
 
         #region Create Amenity Number
+
         public IActionResult CreateAmenity()
         {
-            //for Drop Down List  
+            //for Drop Down List
             //Transfer temp data Controllert to View
 
             AmenityVM AmenityNumberVM = new()
@@ -42,6 +48,7 @@ namespace WhiteLagoon.web.Controllers
             };
             return View(AmenityNumberVM);
         }
+
         [HttpPost]
         public IActionResult CreateAmenity(AmenityVM obj)
         {
@@ -51,22 +58,24 @@ namespace WhiteLagoon.web.Controllers
                 TempData["success"] = "The Amenity Number  has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
-           
-                obj.VillaList = _unitOfWork.Amenity.GetAll().Select(u => new SelectListItem
+
+            obj.VillaList = _unitOfWork.Amenity.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             });
             return View(obj);
         }
-        #endregion
+
+        #endregion Create Amenity Number
 
         #region Update Amenity Number
+
         public IActionResult Update(int amenityId)
         {
             AmenityVM AmenityNumberVM = new()
             {
-                VillaList =_unitOfWork.Amenity.GetAll().ToList().Select(u => new SelectListItem
+                VillaList = _unitOfWork.Amenity.GetAll().ToList().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -75,32 +84,33 @@ namespace WhiteLagoon.web.Controllers
             };
             if (AmenityNumberVM.Amenity == null)
             {
-                return RedirectToAction("error","Home"); 
+                return RedirectToAction("error", "Home");
             }
             return View(AmenityNumberVM);
         }
+
         [HttpPost]
         public IActionResult Update(AmenityVM obj)
         {
-
             if (obj is not null)
             {
                 _unitOfWork.Amenity.Update(obj.Amenity);
                 TempData["success"] = "The Amenity Number  has been Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
-          
+
             obj.VillaList = _unitOfWork.Amenity.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             });
             return View(obj);
-
         }
-        #endregion
+
+        #endregion Update Amenity Number
 
         #region Delete Amenity Number
+
         public IActionResult DeleteAmenity(int amenityId)
         {
             AmenityVM AmenityNumberVM = new()
@@ -118,6 +128,7 @@ namespace WhiteLagoon.web.Controllers
             }
             return View(AmenityNumberVM);
         }
+
         [HttpPost]
         public IActionResult DeleteAmenity(AmenityVM AmenityNumberVM)
         {
@@ -131,6 +142,7 @@ namespace WhiteLagoon.web.Controllers
             TempData["success"] = "The Amenity has been Deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
-        #endregion
+
+        #endregion Delete Amenity Number
     }
 }
